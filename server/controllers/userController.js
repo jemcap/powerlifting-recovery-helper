@@ -18,6 +18,11 @@ const registerUser = expressAsyncHandler(async (req, res, next) => {
     return res.status(400).send({ error: "Entry must be complete" });
   }
 
+  const isExistingEntry = await User.find({ email });
+  if (isExistingEntry) {
+    res.status(400).send({ error: "Entry must be unique" });
+  }
+
   try {
     const newUser = new User({
       name,
